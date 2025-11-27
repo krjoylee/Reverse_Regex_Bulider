@@ -1,0 +1,1758 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reverse Regex Builder</title>
+    <style>
+        :root {
+  /* Primitive Color Tokens */
+  --color-white: rgba(255, 255, 255, 1);
+  --color-black: rgba(0, 0, 0, 1);
+  --color-cream-50: rgba(252, 252, 249, 1);
+  --color-cream-100: rgba(255, 255, 253, 1);
+  --color-gray-200: rgba(245, 245, 245, 1);
+  --color-gray-300: rgba(167, 169, 169, 1);
+  --color-gray-400: rgba(119, 124, 124, 1);
+  --color-slate-500: rgba(98, 108, 113, 1);
+  --color-brown-600: rgba(94, 82, 64, 1);
+  --color-charcoal-700: rgba(31, 33, 33, 1);
+  --color-charcoal-800: rgba(38, 40, 40, 1);
+  --color-slate-900: rgba(19, 52, 59, 1);
+  --color-teal-300: rgba(50, 184, 198, 1);
+  --color-teal-400: rgba(45, 166, 178, 1);
+  --color-teal-500: rgba(33, 128, 141, 1);
+  --color-teal-600: rgba(29, 116, 128, 1);
+  --color-teal-700: rgba(26, 104, 115, 1);
+  --color-teal-800: rgba(41, 150, 161, 1);
+  --color-red-400: rgba(255, 84, 89, 1);
+  --color-red-500: rgba(192, 21, 47, 1);
+  --color-orange-400: rgba(230, 129, 97, 1);
+  --color-orange-500: rgba(168, 75, 47, 1);
+
+  /* RGB versions for opacity control */
+  --color-brown-600-rgb: 94, 82, 64;
+  --color-teal-500-rgb: 33, 128, 141;
+  --color-slate-900-rgb: 19, 52, 59;
+  --color-slate-500-rgb: 98, 108, 113;
+  --color-red-500-rgb: 192, 21, 47;
+  --color-red-400-rgb: 255, 84, 89;
+  --color-orange-500-rgb: 168, 75, 47;
+  --color-orange-400-rgb: 230, 129, 97;
+
+  /* Background color tokens (Light Mode) */
+  --color-bg-1: rgba(59, 130, 246, 0.08);
+  --color-bg-2: rgba(245, 158, 11, 0.08);
+  --color-bg-3: rgba(34, 197, 94, 0.08);
+  --color-bg-4: rgba(239, 68, 68, 0.08);
+  --color-bg-5: rgba(147, 51, 234, 0.08);
+  --color-bg-6: rgba(249, 115, 22, 0.08);
+  --color-bg-7: rgba(236, 72, 153, 0.08);
+  --color-bg-8: rgba(6, 182, 212, 0.08);
+
+  /* Semantic Color Tokens (Light Mode) */
+  --color-background: var(--color-cream-50);
+  --color-surface: var(--color-cream-100);
+  --color-text: var(--color-slate-900);
+  --color-text-secondary: var(--color-slate-500);
+  --color-primary: var(--color-teal-500);
+  --color-primary-hover: var(--color-teal-600);
+  --color-primary-active: var(--color-teal-700);
+  --color-secondary: rgba(var(--color-brown-600-rgb), 0.12);
+  --color-secondary-hover: rgba(var(--color-brown-600-rgb), 0.2);
+  --color-secondary-active: rgba(var(--color-brown-600-rgb), 0.25);
+  --color-border: rgba(var(--color-brown-600-rgb), 0.2);
+  --color-btn-primary-text: var(--color-cream-50);
+  --color-card-border: rgba(var(--color-brown-600-rgb), 0.12);
+  --color-card-border-inner: rgba(var(--color-brown-600-rgb), 0.12);
+  --color-error: var(--color-red-500);
+  --color-success: var(--color-teal-500);
+  --color-warning: var(--color-orange-500);
+  --color-info: var(--color-slate-500);
+  --color-focus-ring: rgba(var(--color-teal-500-rgb), 0.4);
+  --color-select-caret: rgba(var(--color-slate-900-rgb), 0.8);
+
+  --focus-ring: 0 0 0 3px var(--color-focus-ring);
+  --focus-outline: 2px solid var(--color-primary);
+  --status-bg-opacity: 0.15;
+  --status-border-opacity: 0.25;
+  --select-caret-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23134252' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  --select-caret-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23f5f5f5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+
+  --color-success-rgb: 33, 128, 141;
+  --color-error-rgb: 192, 21, 47;
+  --color-warning-rgb: 168, 75, 47;
+  --color-info-rgb: 98, 108, 113;
+
+  /* Typography */
+  --font-family-base: "FKGroteskNeue", "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-family-mono: "Berkeley Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-size-xs: 11px;
+  --font-size-sm: 12px;
+  --font-size-base: 14px;
+  --font-size-md: 14px;
+  --font-size-lg: 16px;
+  --font-size-xl: 18px;
+  --font-size-2xl: 20px;
+  --font-size-3xl: 24px;
+  --font-size-4xl: 30px;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 550;
+  --font-weight-bold: 600;
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.5;
+  --letter-spacing-tight: -0.01em;
+
+  /* Spacing */
+  --space-0: 0;
+  --space-1: 1px;
+  --space-2: 2px;
+  --space-4: 4px;
+  --space-6: 6px;
+  --space-8: 8px;
+  --space-10: 10px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-32: 32px;
+
+  /* Border Radius */
+  --radius-sm: 6px;
+  --radius-base: 8px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.04), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+  --shadow-inset-sm: inset 0 1px 0 rgba(255, 255, 255, 0.15), inset 0 -1px 0 rgba(0, 0, 0, 0.03);
+
+  /* Animation */
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Layout */
+  --container-sm: 640px;
+  --container-md: 768px;
+  --container-lg: 1024px;
+  --container-xl: 1280px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-gray-400-rgb: 119, 124, 124;
+    --color-teal-300-rgb: 50, 184, 198;
+    --color-gray-300-rgb: 167, 169, 169;
+    --color-gray-200-rgb: 245, 245, 245;
+
+    --color-bg-1: rgba(29, 78, 216, 0.15);
+    --color-bg-2: rgba(180, 83, 9, 0.15);
+    --color-bg-3: rgba(21, 128, 61, 0.15);
+    --color-bg-4: rgba(185, 28, 28, 0.15);
+    --color-bg-5: rgba(107, 33, 168, 0.15);
+    --color-bg-6: rgba(194, 65, 12, 0.15);
+    --color-bg-7: rgba(190, 24, 93, 0.15);
+    --color-bg-8: rgba(8, 145, 178, 0.15);
+
+    --color-background: var(--color-charcoal-700);
+    --color-surface: var(--color-charcoal-800);
+    --color-text: var(--color-gray-200);
+    --color-text-secondary: rgba(var(--color-gray-300-rgb), 0.7);
+    --color-primary: var(--color-teal-300);
+    --color-primary-hover: var(--color-teal-400);
+    --color-primary-active: var(--color-teal-800);
+    --color-secondary: rgba(var(--color-gray-400-rgb), 0.15);
+    --color-secondary-hover: rgba(var(--color-gray-400-rgb), 0.25);
+    --color-secondary-active: rgba(var(--color-gray-400-rgb), 0.3);
+    --color-border: rgba(var(--color-gray-400-rgb), 0.3);
+    --color-error: var(--color-red-400);
+    --color-success: var(--color-teal-300);
+    --color-warning: var(--color-orange-400);
+    --color-info: var(--color-gray-300);
+    --color-focus-ring: rgba(var(--color-teal-300-rgb), 0.4);
+    --color-btn-primary-text: var(--color-slate-900);
+    --color-card-border: rgba(var(--color-gray-400-rgb), 0.2);
+    --color-card-border-inner: rgba(var(--color-gray-400-rgb), 0.15);
+    --shadow-inset-sm: inset 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+    --color-select-caret: rgba(var(--color-gray-200-rgb), 0.8);
+
+    --color-success-rgb: var(--color-teal-300-rgb);
+    --color-error-rgb: var(--color-red-400-rgb);
+    --color-warning-rgb: var(--color-orange-400-rgb);
+    --color-info-rgb: var(--color-gray-300-rgb);
+  }
+}
+
+@font-face {
+  font-family: 'FKGroteskNeue';
+  src: url('https://r2cdn.perplexity.ai/fonts/FKGroteskNeue.woff2') format('woff2');
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family-base);
+  background-color: var(--color-background);
+  color: var(--color-text);
+  line-height: var(--line-height-normal);
+  font-size: var(--font-size-base);
+  -webkit-font-smoothing: antialiased;
+}
+
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  padding: var(--space-20) var(--space-24);
+  box-shadow: var(--shadow-sm);
+}
+
+.header-content {
+  max-width: var(--container-xl);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-16);
+}
+
+.header h1 {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+  letter-spacing: var(--letter-spacing-tight);
+}
+
+.mode-selector {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+}
+
+.mode-selector label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+}
+
+.mode-selector select {
+  padding: var(--space-8) var(--space-12);
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-base);
+  cursor: pointer;
+  font-family: var(--font-family-base);
+  appearance: none;
+  background-image: var(--select-caret-light);
+  background-repeat: no-repeat;
+  background-position: right var(--space-12) center;
+  background-size: 16px;
+  padding-right: var(--space-32);
+  transition: border-color var(--duration-fast) var(--ease-standard);
+}
+
+@media (prefers-color-scheme: dark) {
+  .mode-selector select {
+    background-image: var(--select-caret-dark);
+  }
+}
+
+.mode-selector select:focus {
+  outline: var(--focus-outline);
+  border-color: var(--color-primary);
+}
+
+.main-content {
+  flex: 1;
+  padding: var(--space-16);
+  max-width: 100%;
+  width: 100%;
+  margin: 0;
+  height: calc(100vh - 100px);
+  max-height: calc(100vh - 100px);
+  overflow: hidden;
+  min-height: 0;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: var(--space-16);
+  height: 100%;
+  max-height: 100%;
+  width: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .grid-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto;
+    overflow-y: auto;
+  }
+}
+
+.quadrant {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-card-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-16);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
+  max-height: 100%;
+  height: 100%;
+  flex: 1 1 auto;
+}
+
+.quadrant-top-left {
+  grid-area: 1 / 1;
+}
+
+.quadrant-top-right {
+  grid-area: 1 / 2;
+}
+
+.quadrant-bottom-left {
+  grid-area: 2 / 1;
+}
+
+.quadrant-bottom-right {
+  grid-area: 2 / 2;
+}
+
+@media (max-width: 768px) {
+  .quadrant-top-left { grid-area: auto; }
+  .quadrant-top-right { grid-area: auto; }
+  .quadrant-bottom-left { grid-area: auto; }
+  .quadrant-bottom-right { grid-area: auto; }
+}
+
+.quadrant-header {
+  margin-bottom: var(--space-12);
+  flex-shrink: 0;
+}
+
+.quadrant-header h2 {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+  margin-bottom: var(--space-6);
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+}
+
+.quadrant-header p {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.quadrant-content {
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
+  max-height: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.input-area {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  max-height: 100%;
+  padding: var(--space-12);
+  font-size: var(--font-size-sm);
+  font-family: var(--font-family-mono);
+  color: var(--color-text);
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-base);
+  resize: none;
+  overflow: auto;
+  transition: border-color var(--duration-fast) var(--ease-standard);
+  flex: 1;
+  flex-shrink: 1;
+  flex-grow: 0;
+  box-sizing: border-box;
+}
+
+.input-area:focus {
+  outline: var(--focus-outline);
+  border-color: var(--color-primary);
+}
+
+.input-area::placeholder {
+  color: var(--color-text-secondary);
+  opacity: 0.6;
+}
+
+.results-section {
+  height: 100%;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
+  flex: 1;
+}
+
+.results-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-16);
+}
+
+.results-header h3 {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+}
+
+.results-count {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  background-color: var(--color-secondary);
+  padding: var(--space-4) var(--space-12);
+  border-radius: var(--radius-full);
+}
+
+.candidates-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
+  max-height: 100%;
+  flex: 1;
+}
+
+.candidate-card {
+  background-color: var(--color-background);
+  border: 1px solid var(--color-card-border);
+  border-radius: var(--radius-base);
+  padding: var(--space-16);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-standard);
+}
+
+.candidate-card:hover {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-md);
+}
+
+.candidate-card.selected {
+  border-color: var(--color-primary);
+  background-color: var(--color-bg-1);
+  box-shadow: var(--shadow-md);
+}
+
+.candidate-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-12);
+}
+
+.candidate-pattern {
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  font-weight: var(--font-weight-medium);
+  word-break: break-all;
+  flex: 1;
+  margin-right: var(--space-12);
+}
+
+.candidate-badges {
+  display: flex;
+  gap: var(--space-8);
+  align-items: center;
+}
+
+.badge {
+  padding: var(--space-4) var(--space-10);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.badge-strict {
+  background-color: rgba(var(--color-error-rgb), var(--status-bg-opacity));
+  color: var(--color-error);
+  border: 1px solid rgba(var(--color-error-rgb), var(--status-border-opacity));
+}
+
+.badge-normal {
+  background-color: rgba(var(--color-warning-rgb), var(--status-bg-opacity));
+  color: var(--color-warning);
+  border: 1px solid rgba(var(--color-warning-rgb), var(--status-border-opacity));
+}
+
+.badge-loose {
+  background-color: rgba(var(--color-success-rgb), var(--status-bg-opacity));
+  color: var(--color-success);
+  border: 1px solid rgba(var(--color-success-rgb), var(--status-border-opacity));
+}
+
+.score-badge {
+  background-color: var(--color-secondary);
+  color: var(--color-text);
+  padding: var(--space-4) var(--space-10);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+}
+
+.candidate-actions {
+  display: flex;
+  gap: var(--space-8);
+  margin-top: var(--space-12);
+}
+
+.btn {
+  padding: var(--space-6) var(--space-12);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  border: none;
+  border-radius: var(--radius-base);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-standard);
+  font-family: var(--font-family-base);
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: var(--color-btn-primary-text);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.btn-secondary {
+  background-color: var(--color-secondary);
+  color: var(--color-text);
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-secondary-hover);
+}
+
+.match-preview {
+  margin-top: var(--space-12);
+  padding: var(--space-12);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-card-border-inner);
+  border-radius: var(--radius-base);
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-sm);
+}
+
+.match-line {
+  margin-bottom: var(--space-8);
+  line-height: 1.8;
+}
+
+.match-line:last-child {
+  margin-bottom: 0;
+}
+
+.match-highlight {
+  background-color: rgba(var(--color-success-rgb), 0.3);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+.no-match {
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+.empty-state {
+  text-align: center;
+  padding: var(--space-32);
+  color: var(--color-text-secondary);
+}
+
+.empty-state-icon {
+  font-size: 48px;
+  margin-bottom: var(--space-16);
+}
+
+.empty-state h3 {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+  margin-bottom: var(--space-8);
+}
+
+.empty-state p {
+  font-size: var(--font-size-sm);
+  margin: 0;
+}
+
+.error-message {
+  background-color: rgba(var(--color-error-rgb), var(--status-bg-opacity));
+  border: 1px solid rgba(var(--color-error-rgb), var(--status-border-opacity));
+  color: var(--color-error);
+  padding: var(--space-12);
+  border-radius: var(--radius-base);
+  font-size: var(--font-size-sm);
+  margin-top: var(--space-12);
+}
+
+.copy-notification {
+  position: fixed;
+  bottom: var(--space-24);
+  right: var(--space-24);
+  background-color: var(--color-success);
+  color: var(--color-btn-primary-text);
+  padding: var(--space-12) var(--space-20);
+  border-radius: var(--radius-base);
+  box-shadow: var(--shadow-lg);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all var(--duration-normal) var(--ease-standard);
+  pointer-events: none;
+}
+
+.copy-notification.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.custom-regex-section {
+  height: 100%;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
+  flex: 1;
+}
+
+.custom-regex-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  margin-bottom: var(--space-16);
+}
+
+.custom-regex-header h3 {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+}
+
+.custom-regex-header .badge {
+  font-size: var(--font-size-xs);
+  padding: var(--space-4) var(--space-10);
+}
+
+.custom-regex-input-wrapper {
+  position: relative;
+  margin-bottom: var(--space-16);
+}
+
+.custom-regex-input {
+  width: 100%;
+  padding: var(--space-12) var(--space-16);
+  padding-right: 48px;
+  font-size: var(--font-size-base);
+  font-family: var(--font-family-mono);
+  color: var(--color-text);
+  background-color: var(--color-background);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-base);
+  transition: all var(--duration-fast) var(--ease-standard);
+}
+
+.custom-regex-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: var(--focus-ring);
+}
+
+.custom-regex-input.valid {
+  border-color: var(--color-success);
+  background-color: rgba(var(--color-success-rgb), 0.05);
+}
+
+.custom-regex-input.invalid {
+  border-color: var(--color-error);
+  background-color: rgba(var(--color-error-rgb), 0.05);
+}
+
+.custom-regex-input::placeholder {
+  color: var(--color-text-secondary);
+  opacity: 0.6;
+}
+
+.validation-indicator {
+  position: absolute;
+  right: var(--space-12);
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: var(--font-size-lg);
+  line-height: 1;
+}
+
+.validation-indicator.valid {
+  color: var(--color-success);
+}
+
+.validation-indicator.invalid {
+  color: var(--color-error);
+}
+
+.custom-regex-error {
+  background-color: rgba(var(--color-error-rgb), var(--status-bg-opacity));
+  border: 1px solid rgba(var(--color-error-rgb), var(--status-border-opacity));
+  color: var(--color-error);
+  padding: var(--space-12);
+  border-radius: var(--radius-base);
+  font-size: var(--font-size-sm);
+  margin-top: var(--space-12);
+  font-family: var(--font-family-mono);
+}
+
+.custom-regex-results {
+  background-color: var(--color-bg-3);
+  border: 1px solid var(--color-card-border);
+  border-radius: var(--radius-base);
+  padding: var(--space-16);
+  margin-top: var(--space-12);
+}
+
+.custom-results-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-12);
+  padding-bottom: var(--space-12);
+  border-bottom: 1px solid var(--color-card-border-inner);
+}
+
+.custom-results-stats {
+  display: flex;
+  gap: var(--space-16);
+  font-size: var(--font-size-sm);
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+.stat-label {
+  color: var(--color-text-secondary);
+}
+
+.stat-value {
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+}
+
+.custom-match-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.custom-match-item {
+  padding: var(--space-10);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-card-border-inner);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-sm);
+  line-height: 1.6;
+}
+
+.custom-match-item.matched {
+  border-left: 3px solid var(--color-success);
+}
+
+.custom-match-item.unmatched {
+  border-left: 3px solid var(--color-error);
+  opacity: 0.7;
+}
+
+.custom-match-source {
+  margin-bottom: var(--space-6);
+  word-break: break-all;
+}
+
+.custom-capture-groups {
+  margin-top: var(--space-8);
+  padding-top: var(--space-8);
+  border-top: 1px solid var(--color-card-border-inner);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+.capture-group {
+  display: inline-block;
+  background-color: rgba(var(--color-primary-rgb, var(--color-teal-500-rgb)), 0.15);
+  color: var(--color-primary);
+  padding: var(--space-2) var(--space-8);
+  border-radius: var(--radius-sm);
+  margin-right: var(--space-6);
+  margin-top: var(--space-4);
+  font-family: var(--font-family-mono);
+}
+
+.custom-actions {
+  display: flex;
+  gap: var(--space-8);
+  margin-top: var(--space-12);
+}
+
+.no-custom-results {
+  text-align: center;
+  padding: var(--space-24);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.divider {
+  margin: var(--space-24) 0;
+  border: none;
+  border-top: 2px dashed var(--color-border);
+  opacity: 0.5;
+}
+
+.auto-candidates-section {
+  height: 100%;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
+  flex: 1;
+}
+
+.candidates-list {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
+  max-height: 100%;
+}
+
+.custom-regex-input-group {
+  flex-shrink: 0;
+  margin-bottom: var(--space-12);
+}
+
+.custom-regex-results-wrapper {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
+  max-height: 100%;
+}
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <div class="header-content">
+                <h1>🔍 Reverse Regex Builder</h1>
+                <div class="mode-selector">
+                    <label for="mode">모드:</label>
+                    <select id="mode">
+                        <option value="generic">Generic</option>
+                        <option value="phone">Phone</option>
+                        <option value="email">Email</option>
+                        <option value="html">HTML</option>
+                        <option value="filename">Filename</option>
+                    </select>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="grid-container">
+                <!-- Top-Left: Source Examples -->
+                <div class="quadrant quadrant-top-left">
+                    <div class="quadrant-header">
+                        <h2>📝 원본 예시 (Source Examples)</h2>
+                        <p>매칭하고 싶은 원본 문자열을 한 줄에 하나씩 입력하세요</p>
+                    </div>
+                    <div class="quadrant-content">
+                        <textarea 
+                            id="sourceInput" 
+                            class="input-area" 
+                            placeholder="예시:&#10;john_smith_123&#10;jane_doe_456&#10;bob_jones_789"
+                        ></textarea>
+                    </div>
+                </div>
+
+                <!-- Top-Right: Target Pattern -->
+                <div class="quadrant quadrant-top-right">
+                    <div class="quadrant-header">
+                        <h2>🎯 매칭 대상 (Target Pattern)</h2>
+                        <p>원본에서 추출하고 싶은 부분을 한 줄에 하나씩 입력하세요</p>
+                    </div>
+                    <div class="quadrant-content">
+                        <textarea 
+                            id="targetInput" 
+                            class="input-area" 
+                            placeholder="예시:&#10;smith&#10;doe&#10;jones"
+                        ></textarea>
+                    </div>
+                </div>
+
+                <!-- Bottom-Left: Auto-Generated Regex Candidates -->
+                <div class="quadrant quadrant-bottom-left">
+                    <div class="quadrant-header">
+                        <h2>🤖 정규식 후보 (Auto-Generated)</h2>
+                        <p>자동으로 생성된 정규식 패턴 후보들입니다</p>
+                    </div>
+                    <div class="quadrant-content">
+                        <div class="auto-candidates-section">
+                            <div class="results-header">
+                                <span class="results-count" id="resultsCount">0개</span>
+                            </div>
+                            <div class="candidates-list" id="candidatesList">
+                                <div class="empty-state">
+                                    <div class="empty-state-icon">🔍</div>
+                                    <h3>후보 생성 대기 중</h3>
+                                    <p>원본 예시와 매칭 대상을 입력하면<br>자동으로 정규식 후보가 생성됩니다.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom-Right: Custom Regex Input -->
+                <div class="quadrant quadrant-bottom-right">
+                    <div class="quadrant-header">
+                        <h2>🎨 사용자 정의 정규식 (Custom Regex)</h2>
+                        <p>직접 정규식 패턴을 입력하여 테스트할 수 있습니다</p>
+                    </div>
+                    <div class="quadrant-content">
+                        <div class="custom-regex-section">
+                            <div class="custom-regex-input-group">
+                                <div class="custom-regex-input-wrapper">
+                                    <input 
+                                        type="text" 
+                                        id="customRegexInput" 
+                                        class="custom-regex-input"
+                                        placeholder="예: \w+_(\d+)\.*"
+                                        autocomplete="off"
+                                        spellcheck="false"
+                                    >
+                                    <span class="validation-indicator" id="validationIndicator"></span>
+                                </div>
+                                <div id="customRegexError" class="custom-regex-error" style="display: none;"></div>
+                            </div>
+                            
+                            <div class="custom-regex-results-wrapper">
+                                <div id="customRegexResults" style="display: none;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="copy-notification" id="copyNotification">정규식이 복사되었습니다! ✓</div>
+
+    <script>
+        // Mode examples data structure
+        const modeExamples = {
+            phone: {
+                sources: [
+                    "010-1234-5678",
+                    "02-123-4567",
+                    "031-1234-5678",
+                    "070-9876-5432",
+                    "0506-123-4567"
+                ],
+                targets: [
+                    "1234",
+                    "123",
+                    "1234",
+                    "9876",
+                    "123"
+                ]
+            },
+            email: {
+                sources: [
+                    "john.smith@example.com",
+                    "jane_doe@company.org",
+                    "contact123@domain.co.kr",
+                    "user.name+tag@mail.com",
+                    "admin@website.net"
+                ],
+                targets: [
+                    "smith",
+                    "doe",
+                    "domain",
+                    "mail",
+                    "website"
+                ]
+            },
+            html: {
+                sources: [
+                    '<div class="container">Content</div>',
+                    '<img src="image.jpg" alt="photo">',
+                    '<a href="https://example.com">Link</a>',
+                    '<input type="text" id="username">',
+                    '<span data-value="123">Text</span>'
+                ],
+                targets: [
+                    "container",
+                    "image.jpg",
+                    "https://example.com",
+                    "username",
+                    "123"
+                ]
+            },
+            filename: {
+                sources: [
+                    "document_v1.2.pdf",
+                    "report_2024_final.docx",
+                    "data_backup_20250113.zip",
+                    "image_001.png",
+                    "archive_2025-01-13.tar.gz"
+                ],
+                targets: [
+                    "1.2",
+                    "2024",
+                    "20250113",
+                    "001",
+                    "2025-01-13"
+                ]
+            },
+            generic: {
+                sources: [],
+                targets: []
+            }
+        };
+
+        // Global state
+        let state = {
+            mode: 'generic',
+            sourceLines: [],
+            targetLines: [],
+            candidates: [],
+            selectedCandidateId: null,
+            customRegex: '',
+            customRegexValid: false,
+            customRegexError: null,
+            customMatches: []
+        };
+
+        // Debounce timer
+        let customRegexDebounceTimer = null;
+
+        // Initialize app
+        function init() {
+            const modeSelect = document.getElementById('mode');
+            const sourceInput = document.getElementById('sourceInput');
+            const targetInput = document.getElementById('targetInput');
+
+            modeSelect.addEventListener('change', (e) => {
+                state.mode = e.target.value;
+                loadModeExamples(state.mode);
+            });
+
+            sourceInput.addEventListener('input', (e) => {
+                state.sourceLines = e.target.value.split('\n').filter(line => line.trim());
+                generateCandidates();
+            });
+
+            targetInput.addEventListener('input', (e) => {
+                state.targetLines = e.target.value.split('\n').filter(line => line.trim());
+                generateCandidates();
+            });
+
+            // Custom regex input handler
+            const customRegexInput = document.getElementById('customRegexInput');
+            customRegexInput.addEventListener('input', (e) => {
+                state.customRegex = e.target.value;
+                
+                // Debounce the validation and testing
+                clearTimeout(customRegexDebounceTimer);
+                customRegexDebounceTimer = setTimeout(() => {
+                    validateAndTestCustomRegex();
+                }, 300);
+            });
+        }
+
+        // Escape special regex characters
+        function escapeRegex(str) {
+            return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+
+        // Tokenize a string into character type groups
+        function tokenize(str) {
+            const tokens = [];
+            let i = 0;
+
+            while (i < str.length) {
+                const char = str[i];
+                
+                if (/\d/.test(char)) {
+                    let digits = char;
+                    let j = i + 1;
+                    while (j < str.length && /\d/.test(str[j])) {
+                        digits += str[j];
+                        j++;
+                    }
+                    tokens.push({ type: 'digit', value: digits, length: digits.length });
+                    i = j;
+                } else if (/[a-zA-Z]/.test(char)) {
+                    let alphas = char;
+                    let j = i + 1;
+                    while (j < str.length && /[a-zA-Z]/.test(str[j])) {
+                        alphas += str[j];
+                        j++;
+                    }
+                    tokens.push({ type: 'alpha', value: alphas, length: alphas.length });
+                    i = j;
+                } else if (/[가-힣]/.test(char)) {
+                    let korean = char;
+                    let j = i + 1;
+                    while (j < str.length && /[가-힣]/.test(str[j])) {
+                        korean += str[j];
+                        j++;
+                    }
+                    tokens.push({ type: 'korean', value: korean, length: korean.length });
+                    i = j;
+                } else if (/\s/.test(char)) {
+                    let spaces = char;
+                    let j = i + 1;
+                    while (j < str.length && /\s/.test(str[j])) {
+                        spaces += str[j];
+                        j++;
+                    }
+                    tokens.push({ type: 'space', value: spaces, length: spaces.length });
+                    i = j;
+                } else {
+                    tokens.push({ type: 'special', value: char, length: 1 });
+                    i++;
+                }
+            }
+
+            return tokens;
+        }
+
+        // Convert tokens to regex pattern
+        function tokensToPattern(tokens, strictness) {
+            return tokens.map(token => {
+                switch (token.type) {
+                    case 'digit':
+                        if (strictness === 'strict') {
+                            return `\\d{${token.length}}`;
+                        }
+                        return '\\d+';
+                    
+                    case 'alpha':
+                        // Always use \w+ for word characters (more standard and flexible)
+                        return '\\w+';
+                    
+                    case 'korean':
+                        return '[가-힣]+';
+                    
+                    case 'space':
+                        if (strictness === 'strict') {
+                            return `\\s{${token.length}}`;
+                        }
+                        return '\\s+';
+                    
+                    case 'special':
+                        return escapeRegex(token.value);
+                    
+                    default:
+                        return escapeRegex(token.value);
+                }
+            }).join('');
+        }
+
+        // Generate regex candidates
+        function generateCandidates() {
+            if (state.sourceLines.length === 0 || state.targetLines.length === 0) {
+                state.candidates = [];
+                renderResults();
+                return;
+            }
+
+            const examples = [];
+            const maxPairs = Math.min(state.sourceLines.length, state.targetLines.length);
+
+            for (let i = 0; i < maxPairs; i++) {
+                const source = state.sourceLines[i];
+                const target = state.targetLines[i];
+                const targetIndex = source.indexOf(target);
+
+                if (targetIndex !== -1) {
+                    examples.push({
+                        source,
+                        target,
+                        prefix: source.substring(0, targetIndex),
+                        capture: target,
+                        suffix: source.substring(targetIndex + target.length)
+                    });
+                }
+            }
+
+            if (examples.length === 0) {
+                state.candidates = [];
+                renderResults();
+                return;
+            }
+
+            // Generate patterns for each strictness level
+            const candidatesSet = new Set();
+            const candidatesList = [];
+
+            ['strict', 'normal', 'loose'].forEach(strictness => {
+                examples.forEach(example => {
+                    const prefixTokens = tokenize(example.prefix);
+                    const captureTokens = tokenize(example.capture);
+                    const suffixTokens = tokenize(example.suffix);
+
+                    let pattern = '';
+
+                    // Add anchors for strict mode
+                    if (strictness === 'strict') {
+                        pattern += '^';
+                    }
+
+                    // Add prefix
+                    if (prefixTokens.length > 0) {
+                        pattern += tokensToPattern(prefixTokens, strictness);
+                    }
+
+                    // Add capture group
+                    pattern += '(' + tokensToPattern(captureTokens, strictness) + ')';
+
+                    // Add suffix
+                    if (suffixTokens.length > 0) {
+                        pattern += tokensToPattern(suffixTokens, strictness);
+                    }
+
+                    // Add anchors for strict mode
+                    if (strictness === 'strict') {
+                        pattern += '$';
+                    }
+
+                    if (!candidatesSet.has(pattern)) {
+                        candidatesSet.add(pattern);
+                        const score = scorePattern(pattern, examples);
+                        candidatesList.push({
+                            id: `candidate_${candidatesList.length}`,
+                            pattern,
+                            strictness,
+                            score
+                        });
+                    }
+                });
+            });
+
+            // Sort by score
+            candidatesList.sort((a, b) => b.score - a.score);
+            state.candidates = candidatesList;
+            renderResults();
+        }
+
+        // Score a pattern against examples
+        function scorePattern(pattern, examples) {
+            let score = 0;
+            let totalMatches = 0;
+            let correctMatches = 0;
+
+            try {
+                const regex = new RegExp(pattern, 'g');
+
+                examples.forEach(example => {
+                    const matches = [...example.source.matchAll(regex)];
+                    
+                    if (matches.length > 0) {
+                        totalMatches++;
+                        
+                        // Check if any match contains the target
+                        matches.forEach(match => {
+                            if (match[1] && match[1] === example.target) {
+                                correctMatches++;
+                            }
+                        });
+                    }
+                });
+
+                const matchRate = examples.length > 0 ? (correctMatches / examples.length) : 0;
+                score = Math.round(matchRate * 100);
+
+                // Bonus points for matching all examples
+                if (correctMatches === examples.length && examples.length > 0) {
+                    score += 10;
+                }
+
+                // Penalty for complex patterns
+                const complexity = pattern.length;
+                if (complexity > 50) {
+                    score -= 5;
+                }
+
+            } catch (e) {
+                score = 0;
+            }
+
+            return Math.max(0, Math.min(100, score));
+        }
+
+        // Render results
+        function renderResults() {
+            const candidatesList = document.getElementById('candidatesList');
+            const resultsCount = document.getElementById('resultsCount');
+
+            resultsCount.textContent = `${state.candidates.length}개`;
+
+            if (state.candidates.length === 0) {
+                candidatesList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🔍</div>
+                        <h3>결과 없음</h3>
+                        <p>원본 예시에서 매칭 대상을 찾을 수 없습니다.<br>입력을 확인해주세요.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            candidatesList.innerHTML = state.candidates.map(candidate => {
+                const isSelected = candidate.id === state.selectedCandidateId;
+                const matchPreview = generateMatchPreview(candidate);
+
+                return `
+                    <div class="candidate-card ${isSelected ? 'selected' : ''}" data-id="${candidate.id}" data-pattern="${escapeHtml(candidate.pattern)}">
+                        <div class="candidate-header">
+                            <div class="candidate-pattern">${candidate.pattern}</div>
+                            <div class="candidate-badges">
+                                <span class="badge badge-${candidate.strictness}">${candidate.strictness}</span>
+                                <span class="score-badge">${candidate.score}</span>
+                            </div>
+                        </div>
+                        <div class="candidate-actions">
+                            <button class="btn btn-primary" onclick="copyPatternFromCard(this)">
+                                복사
+                            </button>
+                            <button class="btn btn-secondary" onclick="togglePreview('${candidate.id}')">
+                                ${isSelected ? '숨기기' : '미리보기'}
+                            </button>
+                        </div>
+                        ${isSelected ? `<div class="match-preview">${matchPreview}</div>` : ''}
+                    </div>
+                `;
+            }).join('');
+
+            // Add click handlers
+            document.querySelectorAll('.candidate-card').forEach(card => {
+                card.addEventListener('click', (e) => {
+                    if (!e.target.closest('button')) {
+                        const candidateId = card.getAttribute('data-id');
+                        togglePreview(candidateId);
+                    }
+                });
+            });
+        }
+
+        // Generate match preview
+        function generateMatchPreview(candidate) {
+            const maxPairs = Math.min(state.sourceLines.length, state.targetLines.length);
+            const lines = [];
+
+            try {
+                const regex = new RegExp(candidate.pattern, 'g');
+
+                for (let i = 0; i < maxPairs; i++) {
+                    const source = state.sourceLines[i];
+                    const matches = [...source.matchAll(regex)];
+
+                    if (matches.length > 0 && matches[0][1]) {
+                        const match = matches[0];
+                        const beforeMatch = source.substring(0, match.index);
+                        const afterMatch = source.substring(match.index + match[0].length);
+                        
+                        lines.push(`
+                            <div class="match-line">
+                                ${escapeHtml(beforeMatch)}<span class="match-highlight">${escapeHtml(match[1])}</span>${escapeHtml(afterMatch)}
+                            </div>
+                        `);
+                    } else {
+                        lines.push(`
+                            <div class="match-line no-match">
+                                ${escapeHtml(source)} (매칭 안됨)
+                            </div>
+                        `);
+                    }
+                }
+            } catch (e) {
+                lines.push(`<div class="error-message">정규식 오류: ${escapeHtml(e.message)}</div>`);
+            }
+
+            return lines.join('');
+        }
+
+        // Toggle preview
+        function togglePreview(candidateId) {
+            if (state.selectedCandidateId === candidateId) {
+                state.selectedCandidateId = null;
+            } else {
+                state.selectedCandidateId = candidateId;
+            }
+            renderResults();
+        }
+
+        // Copy pattern from candidate card (gets raw pattern from data attribute)
+        function copyPatternFromCard(button) {
+            const card = button.closest('.candidate-card');
+            const pattern = card.getAttribute('data-pattern');
+            if (pattern) {
+                copyPattern(pattern);
+            }
+        }
+
+        // Copy pattern to clipboard
+        function copyPattern(pattern) {
+            // Use navigator.clipboard API for better handling of special characters
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(pattern)
+                    .then(() => {
+                        showCopyNotification();
+                    })
+                    .catch(err => {
+                        // Fallback to old method
+                        copyPatternFallback(pattern);
+                    });
+            } else {
+                copyPatternFallback(pattern);
+            }
+        }
+
+        // Fallback copy method
+        function copyPatternFallback(pattern) {
+            const textarea = document.createElement('textarea');
+            textarea.value = pattern;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            
+            try {
+                document.execCommand('copy');
+                showCopyNotification();
+            } catch (err) {
+                console.error('Failed to copy:', err);
+            }
+            
+            document.body.removeChild(textarea);
+        }
+
+        // Show copy notification
+        function showCopyNotification() {
+            const notification = document.getElementById('copyNotification');
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 2000);
+        }
+
+        // Escape HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Load mode examples
+        function loadModeExamples(mode) {
+            const sourceInput = document.getElementById('sourceInput');
+            const targetInput = document.getElementById('targetInput');
+            
+            const examples = modeExamples[mode];
+            
+            if (examples && (examples.sources.length > 0 || examples.targets.length > 0)) {
+                // Populate the textareas
+                sourceInput.value = examples.sources.join('\n');
+                targetInput.value = examples.targets.join('\n');
+                
+                // CRITICAL: Force reset heights to prevent growing
+                sourceInput.style.height = '100%';
+                targetInput.style.height = '100%';
+                
+                // Reset scroll positions
+                sourceInput.scrollTop = 0;
+                targetInput.scrollTop = 0;
+                
+                // Update state
+                state.sourceLines = examples.sources.filter(line => line.trim());
+                state.targetLines = examples.targets.filter(line => line.trim());
+                
+                // Add a subtle visual feedback
+                sourceInput.style.transition = 'background-color 0.3s ease';
+                targetInput.style.transition = 'background-color 0.3s ease';
+                sourceInput.style.backgroundColor = 'rgba(var(--color-success-rgb), 0.1)';
+                targetInput.style.backgroundColor = 'rgba(var(--color-success-rgb), 0.1)';
+                
+                setTimeout(() => {
+                    sourceInput.style.backgroundColor = '';
+                    targetInput.style.backgroundColor = '';
+                }, 500);
+                
+                // Auto-generate regex candidates
+                generateCandidates();
+            } else {
+                // Clear for generic mode
+                sourceInput.value = '';
+                targetInput.value = '';
+                sourceInput.style.height = '100%';
+                targetInput.style.height = '100%';
+                state.sourceLines = [];
+                state.targetLines = [];
+                state.candidates = [];
+                renderResults();
+            }
+        }
+
+        // Validate and test custom regex
+        function validateAndTestCustomRegex() {
+            const input = document.getElementById('customRegexInput');
+            const indicator = document.getElementById('validationIndicator');
+            const errorDiv = document.getElementById('customRegexError');
+            const resultsDiv = document.getElementById('customRegexResults');
+
+            // Clear previous state
+            input.classList.remove('valid', 'invalid');
+            indicator.className = 'validation-indicator';
+            indicator.textContent = '';
+            errorDiv.style.display = 'none';
+            resultsDiv.style.display = 'none';
+            state.customRegexValid = false;
+            state.customRegexError = null;
+            state.customMatches = [];
+
+            // If empty, just return
+            if (!state.customRegex.trim()) {
+                return;
+            }
+
+            // Validate regex syntax
+            try {
+                const regex = new RegExp(state.customRegex, 'g');
+                
+                // Valid regex
+                state.customRegexValid = true;
+                input.classList.add('valid');
+                indicator.classList.add('valid');
+                indicator.textContent = '✓';
+
+                // Test against source lines
+                if (state.sourceLines.length > 0) {
+                    testCustomRegex(regex);
+                }
+
+            } catch (error) {
+                // Invalid regex
+                state.customRegexValid = false;
+                state.customRegexError = error.message;
+                input.classList.add('invalid');
+                indicator.classList.add('invalid');
+                indicator.textContent = '✗';
+                errorDiv.textContent = `오류: ${error.message}`;
+                errorDiv.style.display = 'block';
+            }
+        }
+
+        // Test custom regex against source lines
+        function testCustomRegex(regex) {
+            const resultsDiv = document.getElementById('customRegexResults');
+            const matches = [];
+            let totalMatches = 0;
+            let matchedLines = 0;
+
+            state.sourceLines.forEach((source, index) => {
+                regex.lastIndex = 0; // Reset regex state
+                const lineMatches = [...source.matchAll(regex)];
+                const hasMatch = lineMatches.length > 0;
+                
+                if (hasMatch) {
+                    matchedLines++;
+                    totalMatches += lineMatches.length;
+                }
+
+                matches.push({
+                    source,
+                    matched: hasMatch,
+                    matches: lineMatches,
+                    index
+                });
+            });
+
+            state.customMatches = matches;
+            renderCustomRegexResults(matchedLines, totalMatches);
+        }
+
+        // Render custom regex results
+        function renderCustomRegexResults(matchedLines, totalMatches) {
+            const resultsDiv = document.getElementById('customRegexResults');
+            
+            if (state.customMatches.length === 0) {
+                resultsDiv.style.display = 'none';
+                return;
+            }
+
+            const totalLines = state.sourceLines.length;
+            const successRate = totalLines > 0 ? Math.round((matchedLines / totalLines) * 100) : 0;
+
+            let html = `
+                <div class="custom-regex-results">
+                    <div class="custom-results-header">
+                        <div class="custom-results-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">매칭:</span>
+                                <span class="stat-value">${matchedLines}/${totalLines}</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">성공률:</span>
+                                <span class="stat-value" style="color: ${successRate > 70 ? 'var(--color-success)' : successRate > 40 ? 'var(--color-warning)' : 'var(--color-error)'}">${successRate}%</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">총 매칭 수:</span>
+                                <span class="stat-value">${totalMatches}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="custom-match-list">
+            `;
+
+            state.customMatches.forEach(item => {
+                const matchedClass = item.matched ? 'matched' : 'unmatched';
+                
+                if (item.matched && item.matches.length > 0) {
+                    // Show matches with highlighting
+                    let highlightedSource = item.source;
+                    let offset = 0;
+                    
+                    item.matches.forEach(match => {
+                        const matchStart = match.index + offset;
+                        const matchEnd = matchStart + match[0].length;
+                        const before = highlightedSource.substring(0, matchStart);
+                        const matched = highlightedSource.substring(matchStart, matchEnd);
+                        const after = highlightedSource.substring(matchEnd);
+                        
+                        highlightedSource = `${before}<span class="match-highlight">${escapeHtml(matched)}</span>${after}`;
+                        offset += '<span class="match-highlight"></span>'.length;
+                    });
+
+                    html += `
+                        <div class="custom-match-item ${matchedClass}">
+                            <div class="custom-match-source">${highlightedSource}</div>
+                    `;
+
+                    // Show capture groups if any
+                    const captureGroups = [];
+                    item.matches.forEach(match => {
+                        for (let i = 1; i < match.length; i++) {
+                            if (match[i] !== undefined) {
+                                captureGroups.push(match[i]);
+                            }
+                        }
+                    });
+
+                    if (captureGroups.length > 0) {
+                        html += `
+                            <div class="custom-capture-groups">
+                                <strong>캡처 그룹:</strong>
+                                ${captureGroups.map(group => `<span class="capture-group">${escapeHtml(group)}</span>`).join('')}
+                            </div>
+                        `;
+                    }
+
+                    html += `</div>`;
+                } else {
+                    html += `
+                        <div class="custom-match-item ${matchedClass}">
+                            <div class="custom-match-source">${escapeHtml(item.source)} <span style="color: var(--color-text-secondary); font-style: italic;">(매칭 안됨)</span></div>
+                        </div>
+                    `;
+                }
+            });
+
+            html += `
+                    </div>
+                    
+                    <div class="custom-actions">
+                        <button class="btn btn-primary" onclick="copyCustomPattern()">
+                            복사
+                        </button>
+                        <button class="btn btn-secondary" onclick="clearCustomRegex()">
+                            초기화
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            resultsDiv.innerHTML = html;
+            resultsDiv.style.display = 'block';
+        }
+
+        // Copy custom pattern
+        function copyCustomPattern() {
+            if (!state.customRegex) return;
+            copyPattern(state.customRegex);
+        }
+
+        // Clear custom regex
+        function clearCustomRegex() {
+            document.getElementById('customRegexInput').value = '';
+            state.customRegex = '';
+            validateAndTestCustomRegex();
+        }
+
+        // Start the app
+        init();
+    </script>
+</body>
+</html>
